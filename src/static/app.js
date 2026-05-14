@@ -20,6 +20,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
+        // Create participants list HTML
+        let participantsHTML = `<ul class="participants-list">`;
+
+        if (details.participants.length > 0) {
+          details.participants.forEach((participant) => {
+            participantsHTML += `
+              <li>
+                ${participant}
+                <button class="delete-btn" data-email="${participant}" data-activity="${name}">×</button>
+              </li>`;
+          });
+        } else {
+          participantsHTML += `<li class="no-participants">No participants yet</li>`;
+        }
+
+        participantsHTML += `</ul>`;
+
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
@@ -27,11 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
           <div class="participants-section">
             <strong>Current Participants:</strong>
-            <ul>
-              ${details.participants.length > 0 
-                ? details.participants.map(email => `<li>${email} <button class="delete-btn" data-email="${email}" data-activity="${name}">×</button></li>`).join('') 
-                : '<li>No participants yet</li>'}
-            </ul>
+            ${participantsHTML}
           </div>
         `;
 
